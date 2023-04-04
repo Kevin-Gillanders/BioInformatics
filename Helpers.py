@@ -1,9 +1,9 @@
 def readFileToVariable (fileName):
     with open(fileName, "r") as r :
         data = r.read()
-        print(f"Reading {fileName}")
-        print("===========")
-        print(f"Read in {data}")
+        # print(f"Reading {fileName}")
+        # print("===========")
+        # print(f"Read in {data}")
         return data   
 
 def readFASTAFileToVariable(fileName):
@@ -20,7 +20,7 @@ def readFASTAFileToVariable(fileName):
                 continue
             fastaDataPaired.append([sequenceIdentifier, sequenceData])
             sequenceIdentifier = line[1:]
-            print(sequenceIdentifier)
+            # print(sequenceIdentifier)
             sequenceData = ""
         else:
             sequenceData += line
@@ -36,7 +36,6 @@ def readFileToIterator(fileName):
 
 def readFASTAFileToIterator(fileName):
     fastaData = readFileToIterator(fileName).split("\n")
-    fastaDataPaired = []
     sequenceIdentifier = ""
     sequenceData = ""
     firstElem = True
@@ -49,7 +48,7 @@ def readFASTAFileToIterator(fileName):
             # fastaDataPaired.append([sequenceIdentifier, sequenceData])
             yield [sequenceIdentifier, sequenceData]
             sequenceIdentifier = line[1:]
-            print(sequenceIdentifier)
+            # print(sequenceIdentifier)
             sequenceData = ""
         else:
             sequenceData += line
@@ -57,4 +56,23 @@ def readFASTAFileToIterator(fileName):
     # fastaDataPaired.append([sequenceIdentifier, sequenceData])
     yield [sequenceIdentifier, sequenceData]
 
-    
+
+def dnaCompliment(seq, isDNA = True):
+    # A <-> T/U
+    # C <-> G
+    seqCompliment = ""
+    for base in seq:
+        if base == 'A':
+            if isDNA:
+                seqCompliment += "T"
+            else:
+                seqCompliment += "U"
+        elif (base == "T" and isDNA) or (base == "T" and not isDNA):
+           seqCompliment += "A"
+        elif base == 'C':
+            seqCompliment += "G"
+        elif base == 'G':
+            seqCompliment += "C"
+        else:
+            raise Exception(f"Unrecognised base pair : {base}")
+    return seqCompliment
